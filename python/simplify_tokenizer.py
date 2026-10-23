@@ -1,6 +1,5 @@
 '''
 来自https://github.com/taifyang/sam-inference/blob/main/sam3/simplify_tokenizer.py
-modelscope download --model facebook/sam3 --local_dir /data/sunkx/sam3/model_sam3
 '''
 import json
 import regex as re
