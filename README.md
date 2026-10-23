@@ -1,5 +1,6 @@
 # 说明
 * 基于`https://github.com/dataplayer12/SAM3-TensorRT`进行修改，修改如下：
+  * 加载本地模型
   * 修改onnx输出, ["instance_masks", "semantic_seg"]-->["pred_boxes", "pred_logits", "presence_logits"] (输出目标bbox和置信度)
   * 新增simplify_tokenizer.py，把提示词转成input_ids和attention_mask(SAM3推理输入)
   * 支持TensorRT推理(NVIDIA)、CANN推理(晟腾 NPU)加速
