@@ -54,7 +54,23 @@ wrapper = Sam3ONNXWrapper(model).to(device).eval()
 output_dir = Path(f"onnx_weights")
 output_dir.mkdir(exist_ok=True)
 onnx_path = str(output_dir / f"sam3_dynamic.onnx")
-
+'''
+dynamic_axes={
+    "pixel_values": {0: "batch"},
+    "input_ids": {0: "batch"},
+    "attention_mask": {0: "batch"},
+    "pred_boxes": {0: "batch"},
+    "pred_logits": {0: "batch"},
+    "presence_logits": {0: "batch"},
+},
+trtexec \
+  --onnx=onnx_weights/sam3_dynamic.onnx \
+  --minShapes=pixel_values:1x3x1008x1008,input_ids:1x32,attention_mask:1x32 \
+  --optShapes=pixel_values:2x3x1008x1008,input_ids:2x32,attention_mask:2x32 \
+  --maxShapes=pixel_values:4x3x1008x1008,input_ids:4x32,attention_mask:4x32 \
+  --fp16 \
+  --saveEngine=sam3.engine
+'''
 torch.onnx.export(
     wrapper,
     (pixel_values, input_ids, attention_mask),

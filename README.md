@@ -88,5 +88,12 @@
   * make
   * ./sam3_pcs_app ../../../media/0001/ ../../../python/sam3_fp16.plan
 
-# CANN推理(TODO)
+# CANN推理
 * 把生成的的onnx_weights直接拷贝到SAM3-Inference/python下面
+* cd onnx_weights
+* atc --model=./sam3_dynamic.onnx --framework=5 --insert_op_conf=../../insert_op.cfg --input_shape="pixel_values:1,3,1008,1008;input_ids:1,32;attention_mask:1,32" --output=sam3 --soc_version=Ascend310P3 --precision_mode_v2=mixed_float16
+* cd ${SAM3_PATH}/SAM3-Inference/cpp/cann_src 
+* mkdir build && cd build
+* cmake ..
+* make
+* ./sam3_pcs_app ../../../media/0001/ ../../../python/onnx_weights/sam3_linux_aarch64.om

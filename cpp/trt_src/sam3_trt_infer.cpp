@@ -311,6 +311,7 @@ int main(int argc, char* argv[]){
         for (int idx = 0; idx < dims.nbDims; idx++) {
             nbytes *= dims.d[idx];
         }
+        std::cout << "nbytes: " << nbytes << std::endl;
         if (name == "pred_boxes"){
             pred_boxes_idx = i;
         }
@@ -350,17 +351,18 @@ int main(int argc, char* argv[]){
     auto start = std::chrono::system_clock::now();
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<float> diff;
-    float millis_elapsed = 0.0; // int will overflow after ~650 hours
+    float millis_elapsed = 0.0;
+    size_t img_size;
     for (const auto& fname : std::filesystem::directory_iterator(in_dir)){
         if(!std::filesystem::is_regular_file(fname.path())){
             continue;
         }
         std::filesystem::path outfile = std::filesystem::path("results") / fname.path().filename();
         cv::Mat img = cv::imread(fname.path());
-        size_t img_size;
         if(img_width != img.cols || img_height != img.rows){
             if (input_device){
                 CUDA_CHECK(cudaFree(input_device));
+                input_device = nullptr;
             }
             img_width  = img.cols;
             img_height = img.rows;
@@ -369,8 +371,9 @@ int main(int argc, char* argv[]){
                 CUDA_CHECK(cudaMalloc(&input_device, img_size));
             }
         }
-        start = std::chrono::system_clock::now();
         CUDA_CHECK(cudaMemcpyAsync(input_device, img.data, img_size, cudaMemcpyHostToDevice, sam3_stream));
+
+        start = std::chrono::system_clock::now();
         data_process_sam3(static_cast<uint8_t*>(input_device), static_cast<float*>(input_gpu[pixel_values_idx]), img_width, img_height, 3, in_width, in_height, sam3_stream);
         bool res = trt_ctx->enqueueV3(sam3_stream);
         if(!res){
@@ -396,6 +399,7 @@ int main(int argc, char* argv[]){
         diff = end - start;
         millis_elapsed = (diff.count() * 1000);
         std::cout << "millis_elapsed:" << millis_elapsed << std::endl;
+        
         visualize_sam3_results(img, detections, outfile.string());
     }
 
