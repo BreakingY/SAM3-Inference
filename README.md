@@ -23,6 +23,7 @@
   * docker exec -it sam3_onnx bash
   * cd python
   * 导出onnx: python onnxexport.py
+  * 修复onnx(Jetson): python fix_onnx_if_node.py
 
 # TensorRT推理
 1. 转模型
@@ -35,7 +36,7 @@
     * JetPack6.x
     * 把生成的的onnx_weights直接拷贝到SAM3-Inference/python下面
     * cd ${SAM3_PATH}/SAM3-Inference/python
-  * trtexec --onnx=onnx_weights/sam3_dynamic.onnx --saveEngine=sam3_fp16.plan --fp16 --verbose
+  * trtexec --onnx=<onnx_weights/sam3_dynamic.onnx;onnx_weights/sam3_fixed.onnx> --saveEngine=sam3_fp16.plan --fp16 --verbose
 2. 安装opencv
   * x86: docker exec -it sam3_trt_infer bash && cd /soft
   * apt update
