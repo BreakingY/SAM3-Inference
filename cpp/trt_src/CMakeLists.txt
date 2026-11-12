@@ -36,7 +36,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 add_library(sam3_trt SHARED ./sam3_data_process.cu)
 
-set_target_properties(sam3_trt PROPERTIES CUDA_SEPARABLE_COMPILATION ON CUDA_ARCHITECTURES "native")
+# set_target_properties(sam3_trt PROPERTIES CUDA_SEPARABLE_COMPILATION ON CUDA_ARCHITECTURES "native")
 
 target_link_libraries(
     sam3_trt PUBLIC ${CUDA_LIBRARIES} nvinfer nvonnxparser stdc++fs
@@ -44,7 +44,7 @@ target_link_libraries(
 
 add_executable(sam3_pcs_app ./sam3_trt_infer.cpp)
 
-set_target_properties(sam3_pcs_app PROPERTIES CUDA_SEPARABLE_COMPILATION ON CUDA_ARCHITECTURES "native")
+# set_target_properties(sam3_pcs_app PROPERTIES CUDA_SEPARABLE_COMPILATION ON CUDA_ARCHITECTURES "native")
 
 
 target_link_libraries(
