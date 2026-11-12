@@ -23,7 +23,7 @@
   * docker exec -it sam3_onnx bash
   * cd python
   * 导出onnx: python onnxexport.py
-  * 修复onnx(Jetson): python fix_onnx_if_node.py
+  * 修复onnx(Jetson): python fix_onnx_if_node.py (生成sam3_fixed.onnx和sam3_fixed_weights.bin)
 
 # TensorRT推理
 1. 转模型
