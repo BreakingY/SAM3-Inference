@@ -392,7 +392,7 @@ int main(int argc, char* argv[]){
                                            num_queries,
                                            img_width,
                                            img_height,
-                                           0.5f
+                                           0.3f
                                           );
 
         end = std::chrono::system_clock::now();
